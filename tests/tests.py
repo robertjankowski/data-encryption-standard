@@ -1,6 +1,7 @@
 import unittest
 
 from scripts.bits_utils import xor
+from scripts.key import DEFAULT_KEY, rotate, divide_key
 from scripts.text_utils import bits_to_text, text_to_bits, divide_into_chunks
 from scripts.permutation import initial_permutation, final_permutation, expansion_function, permutation
 
@@ -51,6 +52,21 @@ class TestPermutation(unittest.TestCase):
         self.assertEqual(bits[16 - 1], bits_after[0])
         self.assertEqual(bits[6 - 1], bits_after[-5])
         self.assertEqual(bits[12 - 1], bits_after[5])
+
+
+class TestKey(unittest.TestCase):
+    def test_rotate(self):
+        k = DEFAULT_KEY
+        k_rotated = rotate(k, 1)
+        self.assertEqual(k_rotated[0], k[-1])
+        k_rotated = rotate(k, 2)
+        self.assertEqual(k_rotated[0], k[-2])
+
+    def test_divide(self):
+        k = DEFAULT_KEY
+        c, d = divide_key(k)
+        self.assertEqual(len(c), 28)
+        self.assertEqual(len(d), 28)
 
 
 class TestBitsUtils(unittest.TestCase):
