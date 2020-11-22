@@ -38,3 +38,8 @@ def divide_into_chunks(s: str, nbits=8) -> list:
     """
     result = [s[i:(i + nbits)].ljust(nbits) for i in range(0, len(s), nbits)]
     return result
+
+
+def divide_message(bits: list) -> tuple:
+    assert len(bits) == 64
+    return bits[:32], bits[32:]

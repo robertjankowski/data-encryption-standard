@@ -21,6 +21,7 @@ PC2_TABLE = [
 
 
 def divide_key(key: list) -> tuple:
+    assert len(key) == 56
     return key[:28], key[28:]
 
 

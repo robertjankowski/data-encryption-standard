@@ -12,24 +12,6 @@ IP_1_TABLE = [
     34, 2, 42, 10, 50, 18, 58, 26, 33, 1, 41, 9, 49, 17, 57, 25
 ]
 
-E_TABLE = [
-    32, 1, 2, 3, 4, 5,
-    4, 5, 6, 7, 8, 9,
-    8, 9, 10, 11, 12, 13,
-    12, 13, 14, 15, 16, 17,
-    16, 17, 18, 19, 20, 21,
-    20, 21, 22, 23, 24, 25,
-    24, 25, 26, 27, 28, 29,
-    28, 29, 30, 31, 32, 1
-]
-
-P_TABLE = [
-    16, 7, 20, 21, 29, 12, 28, 17,
-    1, 15, 23, 26, 5, 18, 31, 10,
-    2, 8, 24, 14, 32, 27, 3, 9,
-    19, 13, 30, 6, 22, 11, 4, 25
-]
-
 
 def _permutation(bits: list, table: list, assert_input_len: int, assert_output_len: int):
     assert len(bits) == assert_input_len
@@ -46,11 +28,3 @@ def initial_permutation(bits: list):
 
 def final_permutation(bits: list):
     return _permutation(bits, IP_1_TABLE, 64, 64)
-
-
-def expansion_function(bits: list):
-    return _permutation(bits, E_TABLE, 32, 48)
-
-
-def permutation(bits: list):
-    return _permutation(bits, P_TABLE, 32, 32)
