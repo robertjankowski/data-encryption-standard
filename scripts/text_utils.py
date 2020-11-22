@@ -1,31 +1,45 @@
-def text_to_bits(s: str) -> list:
+def text_to_bits(data: str) -> list:
     """
     Convert string into bits array
 
     :param s:
     :return:
     """
-    result = []
-    for c in s:
-        bits = bin(ord(c))[2:]
-        bits = '00000000'[len(bits):] + bits
-        result.extend([int(b) for b in bits])
+    l = len(data) * 8
+    result = [0] * l
+    pos = 0
+    for ch in data:
+        i = 7
+        while i >= 0:
+            if ch & (1 << i) != 0:
+                result[pos] = 1
+            else:
+                result[pos] = 0
+            pos += 1
+            i -= 1
+
     return result
 
 
-def bits_to_text(bits: list) -> str:
+def bits_to_text(data: list) -> str:
     """
     Convert list of bits into string
 
     :param bits:
     :return:
     """
-    assert len(bits) % 8 == 0
-    chars = []
-    for b in range(int(len(bits) / 8)):
-        byte = bits[b * 8:(b + 1) * 8]
-        chars.append(chr(int(''.join([str(bit) for bit in byte]), 2)))
-    return ''.join(chars)
+    assert len(data) % 8 == 0
+    result = []
+    pos = 0
+    c = 0
+    while pos < len(data):
+        c += data[pos] << (7 - (pos % 8))
+        if (pos % 8) == 7:
+            result.append(c)
+            c = 0
+        pos += 1
+
+    return bytes(result)
 
 
 def divide_into_chunks(s: str, nbits=8) -> list:

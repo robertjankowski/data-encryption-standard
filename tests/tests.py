@@ -4,7 +4,7 @@ from scripts.bits_utils import xor
 from scripts.f_function import expansion_function, num_to_bits, bits_to_num
 from scripts.key import DEFAULT_KEY, rotate, divide_key
 from scripts.text_utils import bits_to_text, text_to_bits, divide_into_chunks
-from scripts.permutation import initial_permutation, final_permutation, permutation
+from scripts.permutation import initial_permutation, final_permutation
 
 
 class TestTextUtils(unittest.TestCase):
@@ -35,15 +35,6 @@ class TestPermutation(unittest.TestCase):
         bits_after = final_permutation(bits)
         self.assertEqual(bits[40 - 1], bits_after[0])
         self.assertEqual(bits[7 - 1], bits_after[9])
-
-    def test_permutation(self):
-        text = 'Exampl'
-        text = divide_into_chunks(text)[0]
-        bits = text_to_bits(text)[:32]
-        bits_after = permutation(bits)
-        self.assertEqual(bits[16 - 1], bits_after[0])
-        self.assertEqual(bits[6 - 1], bits_after[-5])
-        self.assertEqual(bits[12 - 1], bits_after[5])
 
 
 class TestfFunction(unittest.TestCase):
