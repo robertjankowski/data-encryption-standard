@@ -14,10 +14,14 @@ E_TABLE = [
 ]
 
 P_TABLE = [
-    16, 7, 20, 21, 29, 12, 28, 17,
-    1, 15, 23, 26, 5, 18, 31, 10,
-    2, 8, 24, 14, 32, 27, 3, 9,
-    19, 13, 30, 6, 22, 11, 4, 25
+    16, 7, 20, 21,
+    29, 12, 28, 17,
+    1, 15, 23, 26,
+    5, 18, 31, 10,
+    2, 8, 24, 14,
+    32, 27, 3, 9,
+    19, 13, 30, 6,
+    22, 11, 4, 25
 ]
 
 
@@ -53,7 +57,7 @@ def f_function(bits: list, key: list):
         s_box = S_BOXES[idx]
         row_select = bits_to_num([part[0], part[-1]])
         col_select = bits_to_num(part[1:-1])
-        value = num_to_bits(s_box[row_select][col_select])[4:]
+        value = num_to_bits(s_box[row_select][col_select])[-4:]
         output.extend(value)
     output = permutation(output)
     return output

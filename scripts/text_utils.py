@@ -5,6 +5,8 @@ def text_to_bits(data: str) -> list:
     :param s:
     :return:
     """
+    if type(data) == str:
+        data = data.encode('ascii')
     l = len(data) * 8
     result = [0] * l
     pos = 0
@@ -21,7 +23,7 @@ def text_to_bits(data: str) -> list:
     return result
 
 
-def bits_to_text(data: list) -> str:
+def bits_to_text(data: list) -> bytes:
     """
     Convert list of bits into string
 
@@ -50,6 +52,7 @@ def divide_into_chunks(s: str, nbits=8) -> list:
     :param nbits:
     :return: list of equally divided strings
     """
+    s = s.encode('ascii')
     result = [s[i:(i + nbits)].ljust(nbits) for i in range(0, len(s), nbits)]
     return result
 

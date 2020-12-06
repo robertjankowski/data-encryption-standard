@@ -11,7 +11,7 @@ class TestTextUtils(unittest.TestCase):
     def test_bits(self):
         text = 'This is an example'
         bits = text_to_bits(text)
-        self.assertEqual(text, bits_to_text(bits))
+        self.assertEqual(text, bits_to_text(bits).decode('ascii'))
 
     def test_divide(self):
         text = 'This is an example'
@@ -74,6 +74,7 @@ class TestKey(unittest.TestCase):
 
     def test_divide(self):
         k = DEFAULT_KEY
+        k = k[:56]
         c, d = divide_key(k)
         self.assertEqual(len(c), 28)
         self.assertEqual(len(d), 28)

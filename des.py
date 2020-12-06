@@ -8,11 +8,11 @@ from scripts.text_utils import divide_into_chunks, text_to_bits, divide_message,
 class DES:
     def __init__(self, key: list = DEFAULT_KEY):
         self.key = key
-        self.subkeys = self._prepare_keys()
+        self.subkeys = self._prepare_keys(key)
 
-    def _prepare_keys(self) -> list:
+    def _prepare_keys(self, key) -> list:
         subkeys = []
-        key = pc_1_permutation(self.key)
+        key = pc_1_permutation(key)
         c, d = divide_key(key)
         for r in range(1, 17):
             c = rotate(c, r)
@@ -31,40 +31,38 @@ class DES:
             L, R = divide_message(m)
 
             for r in range(1, 17):
-                tmp = f_function(R, self.subkeys[r - 1])
+                k_i = self.subkeys[r - 1]
+                old_L = L
                 L = R
-                R = xor(L, tmp)
+                R = xor(old_L, f_function(R, k_i))
 
-            output = L + R
+            output = R + L
             output = final_permutation(output)
             total_output.append(output)
 
         return total_output
 
-    def decrypt(self, bits: list) -> str:
+    def decrypt(self, bits: list) -> bytes:
         bits = initial_permutation(bits)
         L, R = divide_message(bits)
         for r in range(1, 17):
-            k_i = self.subkeys[15 - r]
-            tmp = f_function(R, k_i)
+            k_i = self.subkeys[16 - r]
+            old_L = L
             L = R
-            R = xor(L, tmp)
+            R = xor(old_L, f_function(R, k_i))
 
-        output = L + R
+        output = R + L
         output = final_permutation(output)
-        print('Decryption: ', output)
         return bits_to_text(output)
 
 
 if __name__ == '__main__':
-    # TODO: https://github.com/twhiteman/pyDes/blob/e988a5ffc9abb8010fc75dba54904d1c5dbe83db/pyDes.py#L437
-    #  1. encode data as ASCII
-    #  2. check perm table
     d = DES()
-    data = "Robert".encode("ascii")
-    print('Data in bits: ', text_to_bits(data))
+    data = "Testing DES algorithm"
+    print('Input: {}'.format(data))
     cipher = d.encrypt(data)
-    print('Encrypted: ', cipher[0])
-    [print(bits_to_text(m)) for m in cipher]
-    decryption = d.decrypt(cipher[0])
-    print(decryption)
+    print('Encrypted:')
+    for c in cipher:
+        print(bits_to_text(c).hex(), c)
+    decryption = ''.join([d.decrypt(c).decode('ascii') for c in cipher])
+    print('Decrypted: {}'.format(decryption))
